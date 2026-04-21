@@ -17,6 +17,29 @@
         #qrcode { background: white; padding: 15px; border: 1px solid #eee; border-radius: 10px; display: inline-block; }
         .status-badge { font-size: 0.8rem; padding: 5px 12px; border-radius: 20px; margin-top: 10px; display: inline-block; }
         #capaQR { display: none; text-align: center; }
+
+        /* ESTILOS DEL RELOJ DE VIDA */
+        .reloj-container {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff5f8;
+            border: 2px dashed #ff4081;
+            border-radius: 15px;
+        }
+        #relojActivo {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #d81b60;
+            display: block;
+        }
+        .reloj-label {
+            font-size: 0.7rem;
+            color: #ad1457;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +80,7 @@
                 <div class="mb-3">
                     <label class="form-label">Motivo de Ingreso</label>
                      <select id="motivo" class="form-select" onchange="verificarMotivoEspecial()">
-                       <option value="">Seleccione una opción...</option>
+                        <option value="">Seleccione una opción...</option>
             <option value="APODERADO-RETIRO ESTUDIANTE/ENFERMERÍA">Apoderado-Retiro Estudiante/Enfermería</option>
             <option value="APODERADO-ENTREGA DE ELEMENTOS">Apoderado-Entrega de elementos</option>
             <option value="APODERADO-SELECCIONES/TALLERES CPDV">Apoderado-Selecciones/Talleres CPDV</option>
@@ -72,20 +95,25 @@
                     </select>
                 </div>
 
- <div class="mb-3" id="contenedorExtra" style="display: none;">
-        <label class="form-label" id="labelExtra">Detalle de Visita</label>
-        <input type="text" id="detalleVisita" class="form-control" placeholder="">
-    </div>
-</div>
+                <div class="mb-3" id="contenedorExtra" style="display: none;">
+                    <label class="form-label" id="labelExtra">Detalle de Visita</label>
+                    <input type="text" id="detalleVisita" class="form-control" placeholder="">
+                </div>
 
-
-                <button onclick="generarPase()" class="btn btn-primary w-100 btn-lg">Validar y Generar QR</button>
+                <button id="btnGenerar" onclick="generarPase()" class="btn btn-primary w-100 btn-lg">Validar y Generar QR</button>
             </div>
 
             <div id="capaQR">
                 <div id="qrcode"></div>
+                
+                <div class="reloj-container">
+                    <span class="reloj-label">Validación de Seguridad en Vivo</span>
+                    <span id="relojActivo">00:00:00</span>
+                    <small class="text-muted" style="font-size: 0.65rem;">Muestre el segundero en movimiento al guardia</small>
+                </div>
+
                 <h5 id="mostrarNombre" class="mt-3"></h5>
-                <span class="status-badge bg-success text-white">VÁLIDO POR 3 HORAS</span>
+                <span class="status-badge bg-success text-white">VÁLIDO POR 1 HORA</span>
                 <hr>
                 <p class="text-muted small">Muestre este QR al guardia en portería.</p>
                 <button onclick="location.reload()" class="btn btn-outline-secondary btn-sm">Generar otro</button>
@@ -95,8 +123,7 @@
 </div>
 
 <script>
-    // URL de tu Google Apps Script
-    const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwj-Ug5r5P0VrjplmbFMNJjM9vEwad4mjUA4q_3Y_JIgTyw6i7SlrZMxUKldovQXE0J/exec";
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxxqnqbO5mlM_MF03BaeIarRVtblqXaKT7bOfbR4uhirLPHeESjy4hKmoLc1CPjymDF/exec";
 
     function formatearRUT(rut) {
         let valor = rut.replace(/[^0-9kK]/g, '');
@@ -106,65 +133,60 @@
         return cuerpo + "-" + dv;
     }
 
-function verificarMotivoEspecial() {
-    const motivo = document.getElementById('motivo').value;
-    const contenedor = document.getElementById('contenedorExtra');
-    const label = document.getElementById('labelExtra');
-    const input = document.getElementById('detalleVisita');
-
-    // Verificamos si la opción seleccionada es Proveedores o Arriendos
-    if (motivo === "VISITA-PROVEEDORES") {
-        contenedor.style.display = "block";
-        label.innerText = "Nombre de la Empresa/Proveedor";
-        input.placeholder = "Ej: Soprole, Chilexpress, etc.";
-    } 
-    else if (motivo === "VISITA-ARRIENDOS") {
-        contenedor.style.display = "block";
-        label.innerText = "Nombre de la Organización/Arrendatario";
-        input.placeholder = "Ej: Club Deportivo, Evento X, etc.";
-    } 
-    else {
-        // Para cualquier otra opción, ocultamos el campo y lo limpiamos
-        contenedor.style.display = "none";
-        input.value = "";
-    }
-}
-
     function togglePatente() {
         const tipo = document.getElementById('tipoEntrada').value;
         document.getElementById('divPatente').style.display = (tipo === 'vehicular') ? 'block' : 'none';
     }
 
+    function verificarMotivoEspecial() {
+    const motivo = document.getElementById('motivo').value;
+    const contenedor = document.getElementById('contenedorExtra');
+    const label = document.getElementById('labelExtra');
+    const input = document.getElementById('detalleVisita');
+        if (motivo === "VISITA-PROVEEDORES") {
+            contenedor.style.display = "block";
+            label.innerText = "Nombre de la Empresa/Proveedor";
+            input.placeholder = "Ej: Soprole, Chilexpress, etc.";
+        } else if (motivo === "VISITA-ARRIENDOS") {
+            contenedor.style.display = "block";
+            label.innerText = "Nombre de la Organización/Arrendatario";
+            input.placeholder = "Ej: Club Deportivo, Evento X, etc.";
+        } else {
+            contenedor.style.display = "none";
+        }
+    }
+
+    // Función del Reloj en tiempo real
+    function iniciarReloj() {
+        const reloj = document.getElementById('relojActivo');
+        setInterval(() => {
+            const ahora = new Date();
+            reloj.innerText = ahora.toLocaleTimeString();
+        }, 1000);
+    }
+
 async function generarPase() {
-    // 1. Captura y Limpieza de datos
-    // Quitamos puntos pero aseguramos que el guion exista para el DV
+    const btn = document.getElementById('btnGenerar');
     let rutRaw = document.getElementById('run').value.trim().replace(/\./g, '');
-    
-    // Si el usuario olvidó el guion, se lo ponemos antes del último dígito
     if (rutRaw.length > 1 && !rutRaw.includes('-')) {
         rutRaw = rutRaw.slice(0, -1) + "-" + rutRaw.slice(-1);
     }
+    
     const rut = rutRaw;
-    const nombre = document.getElementById('nombre').value.trim() || "Invitado";
+    const nombreForm = document.getElementById('nombre').value.trim();
     const tipo = document.getElementById('tipoEntrada').value;
     const patente = (tipo === 'vehicular') ? (document.getElementById('patente').value.trim() || "SN") : "NA";
     const motivo = document.getElementById('motivo').value;
-    
-    // Manejo robusto del detalle de visita
-    const campoDetalle = document.getElementById('detalleVisita');
-    const detalle = (campoDetalle && campoDetalle.value.trim() !== "") ? campoDetalle.value.trim() : "SD";
+    const detalle = document.getElementById('detalleVisita').value.trim() || "SD";
 
-    // Validación mínima
-    if (rut.length < 8 || nombre.length < 3) {
-        alert("Por favor, ingresa un RUT válido y tu nombre completo.");
+    if (rut.length < 8 || !motivo || !nombreForm) {
+        alert("Por favor, complete todos los campos requeridos.");
         return;
     }
 
-    const urlFinal = `${URL_SCRIPT}?accion=validarInvitado&run=${encodeURIComponent(rut)}`;
-
+    // ENVÍO DE INFORMACIÓN AL SCRIPT DE AUTORIZADOS
+    const urlFinal = `${URL_SCRIPT}?accion=validarInvitado&run=${encodeURIComponent(rut)}&nombre=${encodeURIComponent(nombreForm)}&tipo=${encodeURIComponent(tipo)}&patente=${encodeURIComponent(patente)}&motivo=${encodeURIComponent(motivo)}&detalle=${encodeURIComponent(detalle)}`;
     try {
-        const btn = document.querySelector("button");
-        const textoOriginal = btn.innerText;
         btn.innerText = "Validando...";
         btn.disabled = true;
 
@@ -172,39 +194,42 @@ async function generarPase() {
         const data = await resp.json();
 
         if (data.autorizado) {
+            if (data.limiteExcedido) {
+                alert("⚠️ Has superado el límite de 2 pases diarios permitidos.");
+                btn.disabled = false;
+                btn.innerText = "Validar y Generar QR";
+                return;
+            }
+
             const ahora = Date.now();
+            const nombreFinal = data.nombre || nombreForm;
             
-            // ESTRUCTURA REFORZADA: 8 campos separados por |
-            // Importante: No dejar espacios alrededor de los pipes
-            const stringQR = `PASE|${rut}|${nombre}|${tipo}|${patente}|${motivo}|${detalle}|${ahora}`;
-            
-            console.log("QR Generado:", stringQR); // Para que revises en la consola
+            // ESTRUCTURA QR: PASE | RUT | NOMBRE | TIPO | PATENTE | MOTIVO | DETALLE | TIMESTAMP
+            const stringQR = `PASE|${rut}|${nombreFinal}|${tipo}|${patente}|${motivo}|${detalle}|${ahora}`;
 
             document.getElementById('formInvitado').style.display = 'none';
             document.getElementById('capaQR').style.display = 'block';
-            document.getElementById('mostrarNombre').innerText = nombre;
+            document.getElementById('mostrarNombre').innerText = nombreFinal;
 
-            // Limpiamos el QR anterior si existe
+            // Iniciar Reloj de Vida
+            iniciarReloj();
+
             document.getElementById("qrcode").innerHTML = "";
-            
             new QRCode(document.getElementById("qrcode"), {
                 text: stringQR,
-                width: 250, // Un poco más grande facilita la lectura de pistolas baratas
+                width: 250,
                 height: 250,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.M // Nivel medio de corrección de errores
+                correctLevel : QRCode.CorrectLevel.M
             });
 
         } else {
-            alert("⚠️ RUT no autorizado.");
-            btn.innerText = textoOriginal;
+            alert("⚠️ RUT no autorizado en el sistema.");
+            btn.innerText = "Validar y Generar QR";
             btn.disabled = false;
         }
     } catch (e) {
         console.error(e);
         alert("❌ Error de comunicación con la base de datos.");
-        const btn = document.querySelector("button");
         btn.disabled = false;
         btn.innerText = "Validar y Generar QR";
     }
