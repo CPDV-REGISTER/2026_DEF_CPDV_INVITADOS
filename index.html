@@ -151,6 +151,7 @@
             <option value="APODERADO-SELECCIONES O TALLERES CPDV">Apoderado-Selecciones o Talleres CPDV</option>
             <option value="APODERADO-CITA ADMISION-RECAUDACION">Apoderado-Cita Admisión-Recaudación</option>
             <option value="APODERADO-CITA DOCENTE">Apoderado-Cita docente</option>
+            <option value="APODERADO-ACTIVIDADES ESPECIALES (REUNION, CHARLA, PRESENTACIÓN, GRADUACIÓN)">Apoderado-Actividades especiales (Charla, reunión, graduación, presentación)</option>
             <option value="VISITA-ISP">Visita-ISP</option>
             <option value="VISITA-ADMISION">Visita-Admisión</option>
             <option value="VISITA-ENTREVISTA">Visita-Entrevista</option>
@@ -216,6 +217,22 @@ const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxxqnqbO5mlM_MF03Bae
             contenedor.style.display = "block";
             label.innerText = "Nombre de la Organización/Arrendatario";
             input.placeholder = "Ej: Club Deportivo, Evento X, etc.";
+        } else if (motivo === "VISITA-ENTREVISTA") {
+            contenedor.style.display = "block";
+            label.innerText = "Nombre del convocante";
+            input.placeholder = "Indicar nombre de la persona que convoca";
+        } else if (motivo === "APODERADO-CITA DOCENTE") {
+            contenedor.style.display = "block";
+            label.innerText = "Nombre del convocante";
+            input.placeholder = "Indicar nombre de la persona que convoca";
+        } else if (motivo === "APODERADO-ACTIVIDADES ESPECIALES (REUNION, CHARLA, PRESENTACIÓN, GRADUACIÓN)") {
+            contenedor.style.display = "block";
+            label.innerText = "Nombre de la actividad";
+            input.placeholder = "Indicar nombre de la actividad";
+        } else if (motivo === "VISITA-PERSONAL DE APOYO (PSICOLOGIA, TERAPIA OCUPACIONAL)") {
+            contenedor.style.display = "block";
+            label.innerText = "Identificar ciclo al que presta apoyo";
+            input.placeholder = "Ej: Early Years";
         } else {
             contenedor.style.display = "none";
         }
