@@ -132,7 +132,7 @@
                     <label class="form-label">Motivo de Ingreso</label>
                     <select id="motivo" class="form-select" onchange="verificarMotivoEspecial()">
                         <option value="">Seleccione una opción...</option>
-            <option value="APODERADO-RETIRO ESTUDIANTE: ENFERMERIA-INSPECTORIA">Apoderado-Retiro Estudiante: Enfermería, Inspectoría</option>
+            <option value="APODERADO-RETIRO ESTUDIANTE ENFERMERIA-INSPECTORIA">Apoderado-Retiro Estudiante: Enfermería, Inspectoría</option>
             <option value="APODERADO-ENTREGAR ELEMENTOS">Apoderado-Entregar elementos</option>
             <option value="APODERADO-SELECCIONES O TALLERES CPDV">Apoderado-Selecciones o Talleres CPDV</option>
             <option value="APODERADO-CITA ADMISION-RECAUDACION">Apoderado-Cita Admisión-Recaudación</option>
@@ -141,7 +141,7 @@
             <option value="VISITA-ISP">Visita-ISP</option>
             <option value="VISITA-ADMISION">Visita-Admisión</option>
             <option value="VISITA-ENTREVISTA">Visita-Entrevista</option>
-            <option value="VISITA-PERSONAL DE APOYO: PSICOLOGIA, TERAPIA OCUPACIONAL">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
+            <option value="VISITA-PSICOLOGIA, TERAPIA OCUPACIONAL">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
             <option value="VISITA-ARRIENDOS">Visita-Arriendos</option>
             <option value="VISITA-PROVEEDORES">Visita-Proveedores</option>
                     </select>
@@ -218,7 +218,7 @@ function limpiarTexto(texto) {
             contenedor.style.display = "block";
             label.innerText = "Nombre de la actividad";
             input.placeholder = "Ej: Reunión, Charla, Eventos";
-        } else if (motivo === "VISITA-PERSONAL DE APOYO: PSICOLOGIA, TERAPIA OCUPACIONAL") {
+        } else if (motivo === "VISITA-PSICOLOGIA, TERAPIA OCUPACIONAL") {
             contenedor.style.display = "block";
             label.innerText = "Identificar ciclo al que presta apoyo";
             input.placeholder = "Ej: Early Years";
