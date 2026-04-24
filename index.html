@@ -20,40 +20,33 @@
             padding: 20px 0;
         }
         .ticket-card {
-        background: rgba(255, 255, 255, 0.95); 
+            background: rgba(255, 255, 255, 0.95); 
             border-radius: 10px; 
             overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
             max-width: 450px; 
             margin: auto;
-          }
+        }
         .header-blue { 
-           background: #0d6efd; 
-           color: white; 
-           padding: 0 0 20px 0; /* Quitamos el padding superior y lateral para el logo */
-           text-align: center; 
-              }
-
-        /* OPCIÓN 1: CONTENEDOR BLANCO PARA EL LOGO */
+            background: #0d6efd; 
+            color: white; 
+            padding: 0 0 20px 0;
+            text-align: center; 
+        }
         .logo-container {
             background: white;
-            display: block; /* Ocupa todo el ancho disponible */
-            padding: 15px 0;/* Espacio arriba y abajo del logo */
-            border-radius: 0px;
+            display: block;
+            padding: 15px 0;
             margin-bottom: 15px;
         }
-
         .logo-pase {
-			width: 80%;
-            max-width: 500px; /* Ajustado para caber bien en el contenedor */
+            width: 80%;
+            max-width: 500px;
             height: auto;
-            margin: 0 auto; /* Centra la imagen dentro del bloque blanco */
+            margin: 0 auto;
             display: block;
         }
-
         .content { padding: 25px; }
-
-        /* Estilo del QR */
         #qrcode { 
             background: white; 
             padding: 15px; 
@@ -61,10 +54,7 @@
             border-radius: 12px; 
             display: inline-block; 
             margin-top: 20px;
-           }
-
-
-        /* ESTILOS DEL RELOJ DE VIDA */
+        }
         .reloj-container {
             margin-top: 20px;
             padding: 10px;
@@ -86,18 +76,14 @@
             font-weight: bold;
             letter-spacing: 1px;
         }
-
         .status-badge { 
-		font-size: 0.8rem; 
-		padding: 8px 16px; 
-		border-radius: 50px; 
-                font-weight: 600;
-		margin-top: 10px; 
-		
-	}
+            font-size: 0.8rem; 
+            padding: 8px 16px; 
+            border-radius: 50px; 
+            font-weight: 600;
+            margin-top: 10px; 
+        }
         #capaQR { display: none; text-align: center; }
-
-     /* Inputs elegantes */
         .form-control, .form-select {
             border-radius: 8px;
             padding: 10px;
@@ -111,12 +97,12 @@
 <div class="container">
     <div class="ticket-card">
         <div class="header-blue">
- 		<div class="logo-container">
+            <div class="logo-container">
                 <img src="LOGO-CPDV.png" alt="Logo Colegio" class="logo-pase">
-	</div>
- <h4 class="mb-0">Pase de Acceso Digital</h4>
+            </div>
+            <h4 class="mb-0">Pase de Acceso Digital</h4>
         </div>
-                <div class="content">
+        <div class="content">
             <div id="formInvitado">
                 <div class="mb-3">
                     <label class="form-label">RUN (Cédula de Identidad)</label>
@@ -144,18 +130,18 @@
 
                 <div class="mb-3">
                     <label class="form-label">Motivo de Ingreso</label>
-                     <select id="motivo" class="form-select" onchange="verificarMotivoEspecial()">
+                    <select id="motivo" class="form-select" onchange="verificarMotivoEspecial()">
                         <option value="">Seleccione una opción...</option>
-            <option value="APODERADO-RETIRO ESTUDIANTE (ENFERMERIA,INSPECTORIA)">Apoderado-Retiro Estudiante (Enfermería, Inspectoría)</option>
+            <option value="APODERADO-RETIRO ESTUDIANTE: ENFERMERIA-INSPECTORIA">Apoderado-Retiro Estudiante: Enfermería, Inspectoría</option>
             <option value="APODERADO-ENTREGAR ELEMENTOS">Apoderado-Entregar elementos</option>
             <option value="APODERADO-SELECCIONES O TALLERES CPDV">Apoderado-Selecciones o Talleres CPDV</option>
             <option value="APODERADO-CITA ADMISION-RECAUDACION">Apoderado-Cita Admisión-Recaudación</option>
             <option value="APODERADO-CITA DOCENTE">Apoderado-Cita docente</option>
-            <option value="APODERADO-ACTIVIDADES ESPECIALES (REUNION, CHARLA, PRESENTACION, GRADUACION)">Apoderado-Actividades especiales (Charla, reunión, graduación, presentación)</option>
+            <option value="APODERADO-ACTIVIDADES ESPECIALES">Apoderado-Actividades especiales</option>
             <option value="VISITA-ISP">Visita-ISP</option>
             <option value="VISITA-ADMISION">Visita-Admisión</option>
             <option value="VISITA-ENTREVISTA">Visita-Entrevista</option>
-            <option value="VISITA-PERSONAL DE APOYO (PSICOLOGIA, TERAPIA OCUPACIONAL)">Visita-Personal de apoyo (Psicología, Terapia ocupacional)</option>
+            <option value="VISITA-PERSONAL DE APOYO: PSICOLOGIA, TERAPIA OCUPACIONAL">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
             <option value="VISITA-ARRIENDOS">Visita-Arriendos</option>
             <option value="VISITA-PROVEEDORES">Visita-Proveedores</option>
                     </select>
@@ -171,13 +157,11 @@
 
             <div id="capaQR">
                 <div id="qrcode"></div>
-                
                 <div class="reloj-container">
                     <span class="reloj-label">Validación de Seguridad en Vivo</span>
                     <span id="relojActivo">00:00:00</span>
                     <small class="text-muted" style="font-size: 0.65rem;">Muestre el segundero en movimiento al guardia</small>
                 </div>
-
                 <h5 id="mostrarNombre" class="mt-3 mb-3" style="color: #0d6efd;"></h5>
                 <span class="status-badge bg-success text-white shadow-sm">PASE VÁLIDO POR 1 HORA</span>
                 <hr>
@@ -190,6 +174,16 @@
 
 <script>
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxxqnqbO5mlM_MF03BaeIarRVtblqXaKT7bOfbR4uhirLPHeESjy4hKmoLc1CPjymDF/exec";
+
+    // --- NUEVA FUNCIÓN PARA LIMPIAR CARACTERES ---
+function limpiarTexto(texto) {
+        if (!texto) return "";
+        return texto.normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "") // Elimina tildes
+                    .replace(/\//g, "-")            // Cambia barras / por guiones -
+                    .toUpperCase()                   // Todo a mayúsculas
+                    .trim();                         // Quita espacios sobrantes
+    }
 
     function formatearRUT(rut) {
         let valor = rut.replace(/[^0-9kK]/g, '');
@@ -205,40 +199,35 @@ const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxxqnqbO5mlM_MF03Bae
     }
 
     function verificarMotivoEspecial() {
-    const motivo = document.getElementById('motivo').value;
-    const contenedor = document.getElementById('contenedorExtra');
-    const label = document.getElementById('labelExtra');
-    const input = document.getElementById('detalleVisita');
+        const motivo = document.getElementById('motivo').value;
+        const contenedor = document.getElementById('contenedorExtra');
+        const label = document.getElementById('labelExtra');
+        const input = document.getElementById('detalleVisita');
+        
+        contenedor.style.display = "block";
         if (motivo === "VISITA-PROVEEDORES") {
-            contenedor.style.display = "block";
             label.innerText = "Nombre de la Empresa/Proveedor";
             input.placeholder = "Ej: Soprole, Chilexpress, etc.";
         } else if (motivo === "VISITA-ARRIENDOS") {
-            contenedor.style.display = "block";
             label.innerText = "Nombre de la Organización/Arrendatario";
-            input.placeholder = "Ej: Club Deportivo, Evento X, etc.";
-        } else if (motivo === "VISITA-ENTREVISTA") {
-            contenedor.style.display = "block";
+            input.placeholder = "Ej: Club Deportivo, Evento, etc.";
+        } else if (motivo === "VISITA-ENTREVISTA" || motivo === "APODERADO-CITA DOCENTE") {
             label.innerText = "Nombre del convocante";
             input.placeholder = "Indicar nombre de la persona que convoca";
-        } else if (motivo === "APODERADO-CITA DOCENTE") {
-            contenedor.style.display = "block";
-            label.innerText = "Nombre del convocante";
-            input.placeholder = "Indicar nombre de la persona que convoca";
-        } else if (motivo === "APODERADO-ACTIVIDADES ESPECIALES (REUNION, CHARLA, PRESENTACION, GRADUACION)") {
+               } else if (motivo === "APODERADO-ACTIVIDADES ESPECIALES") {
             contenedor.style.display = "block";
             label.innerText = "Nombre de la actividad";
-            input.placeholder = "Indicar nombre de la actividad";
-        } else if (motivo === "VISITA-PERSONAL DE APOYO (PSICOLOGIA, TERAPIA OCUPACIONAL)") {
+            input.placeholder = "Ej: Reunión, Charla, Eventos";
+        } else if (motivo === "VISITA-PERSONAL DE APOYO: PSICOLOGIA, TERAPIA OCUPACIONAL") {
             contenedor.style.display = "block";
             label.innerText = "Identificar ciclo al que presta apoyo";
             input.placeholder = "Ej: Early Years";
         } else {
             contenedor.style.display = "none";
+        input.value = "";
         }
     }
 
-    // Función del Reloj en tiempo real
     function iniciarReloj() {
         const reloj = document.getElementById('relojActivo');
         setInterval(() => {
@@ -249,25 +238,25 @@ const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbxxqnqbO5mlM_MF03Bae
 
 async function generarPase() {
     const btn = document.getElementById('btnGenerar');
-    let rutRaw = document.getElementById('run').value.trim().replace(/\./g, '');
-    if (rutRaw.length > 1 && !rutRaw.includes('-')) {
-        rutRaw = rutRaw.slice(0, -1) + "-" + rutRaw.slice(-1);
-    }
-    
-    const rut = rutRaw;
-    const nombreForm = document.getElementById('nombre').value.trim();
+    let rut = document.getElementById('run').value.trim();
+    const nombreRaw = document.getElementById('nombre').value.trim();
     const tipo = document.getElementById('tipoEntrada').value;
     const patente = (tipo === 'vehicular') ? (document.getElementById('patente').value.trim() || "SN") : "NA";
-    const motivo = document.getElementById('motivo').value;
-    const detalle = document.getElementById('detalleVisita').value.trim() || "SD";
+    const motivoRaw = document.getElementById('motivo').value;
+    const detalleRaw = document.getElementById('detalleVisita').value.trim() || "SD";
 
-    if (rut.length < 8 || !motivo || !nombreForm) {
+    if (rut.length < 8 || !motivoRaw || !nombreRaw) {
         alert("Por favor, complete todos los campos requeridos.");
         return;
     }
 
-    // ENVÍO DE INFORMACIÓN AL SCRIPT DE AUTORIZADOS
-    const urlFinal = `${URL_SCRIPT}?accion=validarInvitado&run=${encodeURIComponent(rut)}&nombre=${encodeURIComponent(nombreForm)}&tipo=${encodeURIComponent(tipo)}&patente=${encodeURIComponent(patente)}&motivo=${encodeURIComponent(motivo)}&detalle=${encodeURIComponent(detalle)}`;
+    // Limpieza de datos para evitar errores de envío y overflow
+    const nombreLimpio = limpiarTexto(nombreRaw);
+    const motivoLimpio = limpiarTexto(motivoRaw);
+    const detalleLimpio = limpiarTexto(detalleRaw).substring(0, 50); // Limite de 50 caracteres
+
+    const urlFinal = `${URL_SCRIPT}?accion=validarInvitado&run=${encodeURIComponent(rut)}&nombre=${encodeURIComponent(nombreLimpio)}&tipo=${encodeURIComponent(tipo)}&patente=${encodeURIComponent(patente)}&motivo=${encodeURIComponent(motivoLimpio)}&detalle=${encodeURIComponent(detalleLimpio)}`;
+    
     try {
         btn.innerText = "Validando...";
         btn.disabled = true;
@@ -284,24 +273,26 @@ async function generarPase() {
             }
 
             const ahora = Date.now();
-            const nombreFinal = data.nombre || nombreForm;
+            const nombreMostrar = data.nombre || nombreLimpio;
             
-            // ESTRUCTURA QR: PASE | RUT | NOMBRE | TIPO | PATENTE | MOTIVO | DETALLE | TIMESTAMP
-            const stringQR = `PASE|${rut}|${nombreFinal}|${tipo}|${patente}|${motivo}|${detalle}|${ahora}`;
+            // Estructura QR optimizada (sin tildes y con detalle corto)
+            const stringQR = `PASE|${rut}|${nombreMostrar}|${tipo}|${patente}|${motivoLimpio}|${detalleLimpio}|${ahora}`;
 
             document.getElementById('formInvitado').style.display = 'none';
             document.getElementById('capaQR').style.display = 'block';
-            document.getElementById('mostrarNombre').innerText = nombreFinal;
+            document.getElementById('mostrarNombre').innerText = nombreMostrar;
 
-            // Iniciar Reloj de Vida
             iniciarReloj();
 
             document.getElementById("qrcode").innerHTML = "";
+
             new QRCode(document.getElementById("qrcode"), {
                 text: stringQR,
                 width: 250,
                 height: 250,
-                correctLevel : QRCode.CorrectLevel.M
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.L // Nivel Low para máxima capacidad de texto
             });
 
         } else {
