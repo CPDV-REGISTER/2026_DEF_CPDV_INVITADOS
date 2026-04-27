@@ -127,14 +127,18 @@
 
                 <div id="divPatente" class="mb-3" style="display:none;">
                     <label class="form-label">Patente</label>
-                    <input type="text" id="patente" class="form-control" placeholder="AABB11">
+                    <input type="text" id="patente" class="form-control" 
+       placeholder="ABCD12" 
+       maxlength="6" 
+       style="text-transform: uppercase;"
+       oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Motivo de Ingreso</label>
                     <select id="motivo" class="form-select" onchange="verificarMotivoEspecial()">
                         <option value="">Seleccione una opción...</option>
-            <option value="APODERADO-RETIRO ESTUDIANTE: ENFERMERIA-INSPECTORIA">Apoderado-Retiro Estudiante: Enfermería, Inspectoría</option>
+            <option value="APODERADO-RETIRO ESTUDIANTE-ENFERMERIA-INSPECTORIA">Apoderado-Retiro Estudiante: Enfermería, Inspectoría</option>
             <option value="APODERADO-ENTREGAR ELEMENTOS">Apoderado-Entregar elementos</option>
             <option value="APODERADO-SELECCIONES O TALLERES CPDV">Apoderado-Selecciones o Talleres CPDV</option>
             <option value="APODERADO-CITA ADMISION-RECAUDACION">Apoderado-Cita Admisión-Recaudación</option>
@@ -143,16 +147,18 @@
             <option value="VISITA-ISP">Visita-ISP</option>
             <option value="VISITA-ADMISION">Visita-Admisión</option>
             <option value="VISITA-ENTREVISTA">Visita-Entrevista</option>
-            <option value="VISITA-PERSONAL DE APOYO: PSICOLOGIA, TERAPIA OCUPACIONAL">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
+            <option value="VISITA-PERSONAL DE APOYO-PSICOLOGIA, TERAPIA OCUPACIONAL">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
             <option value="VISITA-ARRIENDOS">Visita-Arriendos</option>
             <option value="VISITA-PROVEEDORES">Visita-Proveedores</option>
+            <option value="COLABORADORES-SERVICIO">Colaboradores-Servicio</option>
                     </select>
                 </div>
 
-                <div class="mb-3" id="contenedorExtra" style="display: none;">
-                    <label class="form-label" id="labelExtra">Detalle de Visita</label>
-                    <input type="text" id="detalleVisita" class="form-control" placeholder="">
-                </div>
+<div class="col-md-12 mb-3" id="contenedorExtra" style="display: none;">
+    <label class="form-label" id="labelExtra">Detalle de Visita</label>
+        <select id="detalleSelect" class="form-select" style="display: none;"></select>
+        <input type="text" id="detalleInput" class="form-control" style="display: none;" placeholder="">
+</div>
 
                 <button id="btnGenerar" onclick="generarPase()" class="btn btn-primary w-100 btn-lg">Validar y Generar QR</button>
             </div>
@@ -195,40 +201,90 @@ function limpiarTexto(texto) {
         return cuerpo + "-" + dv;
     }
 
+function validarPatente(patente) {
+    // Si es Peatonal o no hay patente, devolvemos true (es válido que no haya)
+    if (!patente || patente === "NA" || patente === "SN") return true;
+    // Limpiamos espacios y pasamos a mayúsculas
+    const p = patente.trim().toUpperCase();
+        // Formatos Chilenos:
+    // 1. ABCD12 (Nuevas: 4 letras + 2 números)
+    // 2. AB1234 (Antiguas: 2 letras + 4 números)
+    // Excluimos letras que no se usan en patentes chilenas (O, I) opcionalmente, 
+    // pero esta es la regex estándar:
+    const regexPatente = /^([A-Z]{4}\d{2}|[A-Z]{2}\d{4})$/;
+    return regexPatente.test(p);
+}
+
     function togglePatente() {
         const tipo = document.getElementById('tipoEntrada').value;
         document.getElementById('divPatente').style.display = (tipo === 'vehicular') ? 'block' : 'none';
     }
 
-    function verificarMotivoEspecial() {
-        const motivo = document.getElementById('motivo').value;
-        const contenedor = document.getElementById('contenedorExtra');
-        const label = document.getElementById('labelExtra');
-        const input = document.getElementById('detalleVisita');
-        
-        contenedor.style.display = "block";
-        if (motivo === "VISITA-PROVEEDORES") {
-            label.innerText = "Nombre de la Empresa/Proveedor";
-            input.placeholder = "Ej: Soprole, Chilexpress, etc.";
-        } else if (motivo === "VISITA-ARRIENDOS") {
-            label.innerText = "Nombre de la Organización/Arrendatario";
-            input.placeholder = "Ej: Club Deportivo, Evento, etc.";
-        } else if (motivo === "VISITA-ENTREVISTA" || motivo === "APODERADO-CITA DOCENTE") {
-            label.innerText = "Nombre del convocante";
-            input.placeholder = "Indicar nombre de la persona que convoca";
-               } else if (motivo === "APODERADO-ACTIVIDADES ESPECIALES") {
-            contenedor.style.display = "block";
-            label.innerText = "Nombre de la actividad";
-            input.placeholder = "Ej: Reunión, Charla, Eventos";
-        } else if (motivo === "VISITA-PERSONAL DE APOYO: PSICOLOGIA, TERAPIA OCUPACIONAL") {
-            contenedor.style.display = "block";
-            label.innerText = "Identificar ciclo al que presta apoyo";
-            input.placeholder = "Ej: Early Years";
-        } else {
-            contenedor.style.display = "none";
-        input.value = "";
+function verificarMotivoEspecial() {
+    const motivo = document.getElementById('motivo').value;
+    const contenedor = document.getElementById('contenedorExtra');
+    const select = document.getElementById('detalleSelect');
+    const input = document.getElementById('detalleInput');
+    const label = document.getElementById('labelExtra');
+
+    // --- CONFIGURACIÓN DE OPCIONES ---
+    
+    // 1. Motivos que despliegan una LISTA
+    const opcionesLista = {
+        "VISITA-ARRIENDOS": {
+            label: "Seleccione Club/Organización/Arrendatario):",
+            items: ["SOPROLE", "CHILEXPRESS", "BLUE EXPRESS", "CAVALIERI", "OTRO"]
+        },
+        "VISITA-PERSONAL DE APOYO-PSICOLOGIA, TERAPIA OCUPACIONAL": {
+            label: "Seleccione Ciclo que recibe el apoyo:",
+            items: ["EARLY YEARS", "PRIMARY SCHOOL", "SENIOR SCHOOL"]
+        },
+        "COLABORADORES-SERVICIO": {
+            label: "Seleccione Ciclo que recibe el apoyo:",
+            items: ["ASEO", "GUARDIA", "KIOSKO", "CASINO", "VIDACCION"]
         }
+    };
+
+    // 2. Motivos que despliegan un campo de TEXTO LIBRE
+    const opcionesTexto = {
+        "APODERADO-CITA DOCENTE": "Nombre del convocante",
+        "VISITA-ENTREVISTA": "Nombre del convocante",
+        "APODERADO-ACTIVIDADES ESPECIALES": "Nombre del Evento o Actividad",
+        "VISITA-PROVEEDORES": "Nombre de la Empresa/Proveedor"
+    };
+
+    // --- LÓGICA DE VISIBILIDAD ---
+    
+    // Reset inicial
+    contenedor.style.display = "none";
+    select.style.display = "none";
+    input.style.display = "none";
+    input.value = "";
+
+    // CASO A: Es un motivo de LISTA
+    if (opcionesLista[motivo]) {
+        contenedor.style.display = "block";
+        select.style.display = "block";
+        
+        // Aplicamos el label específico definido arriba
+        label.innerText = opcionesLista[motivo].label;
+        
+        // Limpiamos y llenamos el select
+        select.innerHTML = "";
+        opcionesLista[motivo].items.forEach(opt => {
+            select.add(new Option(opt, opt));
+        });
+    } 
+    // CASO B: Es un motivo de TEXTO LIBRE
+    else if (opcionesTexto[motivo]) {
+        contenedor.style.display = "block";
+        input.style.display = "block";
+        
+        // Aplicamos el label definido arriba
+        label.innerText = opcionesTexto[motivo] + ":";
+        input.placeholder = "Escriba aquí...";
     }
+}
 
     function iniciarReloj() {
         const reloj = document.getElementById('relojActivo');
@@ -243,19 +299,49 @@ async function generarPase() {
     let rut = document.getElementById('run').value.trim();
     const nombreRaw = document.getElementById('nombre').value.trim();
     const tipo = document.getElementById('tipoEntrada').value;
-    const patente = (tipo === 'vehicular') ? (document.getElementById('patente').value.trim() || "SN") : "NA";
+    
+    // 1. Captura de Patente
+    const patenteRaw = document.getElementById('patente').value.trim().toUpperCase();
+    const patente = (tipo === 'vehicular') ? (patenteRaw || "SN") : "NA";
+    
     const motivoRaw = document.getElementById('motivo').value;
-    const detalleRaw = document.getElementById('detalleVisita').value.trim() || "SD";
 
+    // --- NUEVA LÓGICA DE CAPTURA DE DETALLE ---
+    let detalleFinal = "SD"; 
+    const divExtra = document.getElementById('contenedorExtra');
+    
+    // Si el contenedor de detalle está visible, buscamos el valor
+    if (divExtra.style.display !== 'none') {
+        const sel = document.getElementById('detalleSelect');
+        const inp = document.getElementById('detalleInput');
+        
+        // Si el select está visible, tomamos su valor; si no, el del input
+        detalleFinal = (sel.style.display !== 'none') ? sel.value : (inp.value.trim() || "SD");
+    }
+    // ------------------------------------------
+
+    // 2. Validaciones básicas de campos vacíos
     if (rut.length < 8 || !motivoRaw || !nombreRaw) {
         alert("Por favor, complete todos los campos requeridos.");
         return;
     }
 
-    // Limpieza de datos para evitar errores de envío y overflow
+    // 3. NUEVA VERIFICACIÓN DE PATENTE (Solo si es vehicular)
+    if (tipo === 'vehicular') {
+        // Llamamos a la función de validación que creamos antes
+        if (!validarPatente(patenteRaw)) {
+            alert("⚠️ La patente ingresada no es válida.\nDebe tener formato Chileno (Ej: ABCD12 o AB1234).");
+            document.getElementById('patente').focus();
+            return; // Aquí detenemos la ejecución
+        }
+    }
+
+    // --- De aquí en adelante sigue tu código normal de envío ---
+    
+    // Limpieza de datos para evitar de envío y overflow
     const nombreLimpio = limpiarTexto(nombreRaw);
     const motivoLimpio = limpiarTexto(motivoRaw);
-    const detalleLimpio = limpiarTexto(detalleRaw).substring(0, 50); // Limite de 50 caracteres
+    const detalleLimpio = limpiarTexto(detalleFinal).substring(0, 50);// Limite de 50 caracteres
 
     const urlFinal = `${URL_SCRIPT}?accion=validarInvitado&run=${encodeURIComponent(rut)}&nombre=${encodeURIComponent(nombreLimpio)}&tipo=${encodeURIComponent(tipo)}&patente=${encodeURIComponent(patente)}&motivo=${encodeURIComponent(motivoLimpio)}&detalle=${encodeURIComponent(detalleLimpio)}`;
     
