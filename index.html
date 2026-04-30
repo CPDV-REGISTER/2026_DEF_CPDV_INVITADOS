@@ -147,10 +147,11 @@
             <option value="VISITA-ISP">Visita-ISP</option>
             <option value="VISITA-ADMISION">Visita-Admisión</option>
             <option value="VISITA-ENTREVISTA">Visita-Entrevista</option>
-            <option value="VISITA-PERSONAL DE APOYO-PSICOLOGIA, TERAPIA OCUPACIONAL">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
+            <option value="VISITA-PERSONAL DE APOYO-PSICOLOGIA, TERAPIA">Visita-Personal de apoyo: Psicología, Terapia ocupacional</option>
+            <option value="VISITA-ACTIVIDADES ESPECIALES">Visita-Actividades especiales</option>
             <option value="VISITA-ARRIENDOS">Visita-Arriendos</option>
             <option value="VISITA-PROVEEDORES">Visita-Proveedores</option>
-            <option value="COLABORADORES-SERVICIO">Colaboradores-Servicio</option>
+            <option value="COLABORADORES-SERVICIOS">Colaboradores-Servicio</option>	
                     </select>
                 </div>
 
@@ -231,25 +232,18 @@ function verificarMotivoEspecial() {
     
     // 1. Motivos que despliegan una LISTA
     const opcionesLista = {
-        "VISITA-ARRIENDOS": {
-            label: "Seleccione Club/Organización/Arrendatario):",
-            items: ["SOPROLE", "CHILEXPRESS", "BLUE EXPRESS", "CAVALIERI", "OTRO"]
-        },
-        "VISITA-PERSONAL DE APOYO-PSICOLOGIA, TERAPIA OCUPACIONAL": {
-            label: "Seleccione Ciclo que recibe el apoyo:",
-            items: ["EARLY YEARS", "PRIMARY SCHOOL", "SENIOR SCHOOL"]
-        },
-        "COLABORADORES-SERVICIO": {
-            label: "Seleccione Ciclo que recibe el apoyo:",
-            items: ["ASEO", "GUARDIA", "KIOSKO", "CASINO", "VIDACCION"]
-        }
+        "VISITA-PERSONAL DE APOYO-PSICOLOGIA, TERAPIA": {label: "Seleccione Ciclo que recibe el apoyo:", items: ["EARLY YEARS", "PRIMARY SCHOOL", "SENIOR SCHOOL"]},
+        "COLABORADORES-SERVICIOS": {label: "Seleccione Ciclo que recibe el apoyo:", items: ["ASEO", "GUARDIA", "KIOSKO", "CASINO", "VIDACCION", "PREUNIVERSITARIO", "TALLERES/SELECCIONES"]}
     };
 
     // 2. Motivos que despliegan un campo de TEXTO LIBRE
     const opcionesTexto = {
         "APODERADO-CITA DOCENTE": "Nombre del convocante",
+        "APODERADO-SELECCIONES O TALLERES CPDV": "Nombre de selección/taller",
         "VISITA-ENTREVISTA": "Nombre del convocante",
         "APODERADO-ACTIVIDADES ESPECIALES": "Nombre del Evento o Actividad",
+        "VISITA-ACTIVIDADES ESPECIALES": "Nombre del Evento o Actividad",
+        "VISITA-ARRIENDOS":"Nombre de la Empresa/Club/Institución",
         "VISITA-PROVEEDORES": "Nombre de la Empresa/Proveedor"
     };
 
